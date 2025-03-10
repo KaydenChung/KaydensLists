@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="./assets/images/icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kayden's Lists</title>
+    <link rel="stylesheet" href="./src/styles.css">
+</head>
+
+<body>
+
+    <div style="text-align: center;" id="content"></div>
+    <script type="module" src="./utilities/firebaseConfig.js"></script>
+    <script type="module" src="./utilities/firebaseConfig.js"></script>
+    <script type="module" src="./utilities/authentication/SignInWithGoogle.js"></script>
+    <script type="module">
+        import { auth } from "./utilities/firebaseConfig.js";
+        import { signInUserWithGoogle } from "./utilities/authentication/SignInWithGoogle.js"
+        import { signOutUser } from "./utilities/authentication/SignInWithGoogle.js"
+        auth.onAuthStateChanged(function(user) {
+            const contentDiv = document.getElementById("content");
+            if (user) {
+                console.log("User Logged In:", user.displayName);
+                contentDiv.innerHTML = `
+                    <div class="userInfo">
+                        <h2>Welcome, ${user.displayName.split(' ')[0]}!</h2>
+                        <button class="btn" id="signOutButton">Sign Out</button>
+                    </div>
+                    <div id="root"></div>
+                `;
+                const signOutBtn = document.getElementById("signOutButton");
+                signOutBtn.addEventListener("click", () => {
+                    signOutUser();
+                });
+                import('./src/main.jsx').then((module) => {
+                }).catch((error) => {
+                    console.error('Error Loading main.jsx:', error);
+                });
+            } else {
+                console.log("User Not Logged In");
+                contentDiv.innerHTML = `
+                    <h1 class="header">Todo List App</h1>
+                    <h3 class="footer">Made By Kayden Chung</h1>
+                    <button class="btn" id="signInButton">Sign In</button>
+                `;
+                const signInBtn = document.getElementById("signInButton");
+                signInBtn.addEventListener("click", () => {
+                    signInUserWithGoogle();
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
