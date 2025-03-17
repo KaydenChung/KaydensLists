@@ -212,6 +212,7 @@ body {
 .list li.dragging {
   opacity: 0.5;
   background-color: hsl(200, 50%, 20%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .drag-handle {
   cursor: grab;
@@ -219,6 +220,8 @@ body {
   color: hsl(200, 70%, 70%);
   margin-right: 0.5rem;
   user-select: none;
+  touch-action: none;
+  padding: 0.5rem;
 }
 
 /* Item Buttons Container */
@@ -277,7 +280,8 @@ body {
     padding: 0.4em 0.8em;
   }
   .drag-handle {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    padding: 0.5rem 0.7rem;
   }
   .loading {
     font-size: 1.2rem;
@@ -285,6 +289,9 @@ body {
   }
   .list li {
     gap: 0.5rem;
+    padding: 0.3rem 0;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
   }
   .list-navigation {
     margin-bottom: 3rem;

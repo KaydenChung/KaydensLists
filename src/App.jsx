@@ -67,15 +67,25 @@ export default function App() {
         timestamp: timestamp,
         position: highestPosition + 1,
       };
+      
+      // Create Temporary ID For New Item
       const tempId = `temp-${timestamp}`;
       const newItem = { ...newItemData, id: tempId };
+      
+      // Update Local State Immediately
       setItems(currentItems => [...currentItems, newItem]);
       
       // Store In Database
-      await storeItem(userId, activeList, title, false);
+      const storedItemId = await storeItem(userId, activeList, title, false);
       
-      // Refresh To Get Real ID's From Database
-      fetchAndDisplayItems(userId, activeList);
+      // Update Temporary Item With Real ID
+      if (storedItemId) {
+        setItems(currentItems => 
+          currentItems.map(item => 
+            item.id === tempId ? { ...item, id: storedItemId } : item
+          )
+        );
+      }
     } catch (error) {
       console.error(`Error Adding ${activeList} Item:`, error);
     }

@@ -11,9 +11,16 @@ export function NewItemForm({ onSubmit, listType }) {
     function handleSubmit(e) {
         e.preventDefault();
         if(newItem === "") return;
-
+        
         onSubmit(newItem);
         setNewItem("");
+
+        // Set Focus Back Io Input After Submission
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+        }, 0);
     }
     
     // Get The Appropriate Placeholder Text Based On List Type

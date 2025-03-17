@@ -16,6 +16,34 @@ export function Item({
 }) {
   const itemRef = useRef(null);
 
+  // Touch hHandling For Mobile Devices
+  const handleTouchStart = (e) => {
+    if (e.target.classList.contains('drag-handle')) {
+      e.preventDefault();
+      onDragStart(index);
+    }
+  };
+  const handleTouchMove = (e) => {
+    if (dragItem.current !== null) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+      const listItem = elements.find(el => el.tagName === 'LI');
+      if (listItem) {
+        const itemIndex = Array.from(listItem.parentNode.children).indexOf(listItem);
+        if (itemIndex !== -1) {
+          onDragOver(itemIndex);
+        }
+      }
+    }
+  };
+  const handleTouchEnd = (e) => {
+    if (dragItem.current !== null) {
+      e.preventDefault();
+      onDrop();
+    }
+  };
+
   return (
     <li 
       ref={itemRef}
@@ -30,6 +58,10 @@ export function Item({
         e.preventDefault();
         onDrop();
       }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      data-index={index}
     >
       <div className="drag-handle" title="Drag to reorder">
         ≡
